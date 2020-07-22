@@ -241,11 +241,12 @@ namespace PluginNetAtmo
                                     foreach (var module in device.modules)
                                         if (module._id == m_DeviceModuleID)
                                         {
+                                            // Requesting additional Netatmo module if exist for CO2
+                                            if (module.dashboard_data != null)
+                                                return module.dashboard_data.CO2;
+
                                             Logger(API.LogType.Error,
-                                                "PluginNetAtmo.dll: Processing function: Update, Action=" + m_Action +
-                                                ". DeviceModuleID=" + m_DeviceModuleID +
-                                                " found but it cannot measure " + m_ValueName);
-                                            return 0;
+                                                "PluginNetAtmo.dll: Processing function: Update, NetAtmo reports that device is unreachable - dashboard_data not returned.");
                                         }
                                 }
 
