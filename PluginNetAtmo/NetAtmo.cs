@@ -23,6 +23,7 @@ namespace PluginNetAtmo
         public double Temperature { get; set; }
         public string temp_trend { get; set; }
         public int Humidity { get; set; }
+        public int CO2 { get; set; }                      // for CO2 readings from additional module
         public int date_max_temp { get; set; }
         public int date_min_temp { get; set; }
         public double min_temp { get; set; }
