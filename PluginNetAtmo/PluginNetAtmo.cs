@@ -12,7 +12,7 @@ using Rainmeter;
     Password=""
     DeviceModuleID=xx:xx:xx:xx:xx:xx
     Action=GetValue/GetValues
-    ValueName=Temperature/CO2/Humidity/Noise/Pressure
+    ValueName=Temperature/CO2/Rain/Humidity/Noise/Pressure
 */
 
 namespace PluginNetAtmo
@@ -29,6 +29,7 @@ namespace PluginNetAtmo
         {
             Temperature,
             CO2,
+            Rain,
             Humidity,
             Noise,
             Pressure
@@ -77,6 +78,9 @@ namespace PluginNetAtmo
                     break;
                 case "co2":
                     m_ValueName = ValueName.CO2;
+                    break;
+                case "rain":
+                    m_ValueName = ValueName.Rain;
                     break;
                 case "humidity":
                     m_ValueName = ValueName.Humidity;
@@ -241,12 +245,43 @@ namespace PluginNetAtmo
                                     foreach (var module in device.modules)
                                         if (module._id == m_DeviceModuleID)
                                         {
+                                            // Requesting additional module for CO2 if exist - Straum
+                                            if (module.dashboard_data != null)
+                                                return module.dashboard_data.CO2;
+
                                             Logger(API.LogType.Error,
-                                                "PluginNetAtmo.dll: Processing function: Update, Action=" + m_Action +
-                                                ". DeviceModuleID=" + m_DeviceModuleID +
-                                                " found but it cannot measure " + m_ValueName);
-                                            return 0;
+                                                "PluginNetAtmo.dll: Processing function: Update, NetAtmo reports that device is unreachable - dashboard_data not returned.");
                                         }
+                                }
+
+                                Logger(API.LogType.Error,
+                                    "PluginNetAtmo.dll: Processing function: Update, Action=" + m_Action +
+                                    ". DeviceModuleID=" + m_DeviceModuleID + " cannot be found");
+                                return 0;
+                            }
+                            case ValueName.Rain:
+                            {
+                                foreach (var device in station.body.devices)
+                                {
+                                    if (device._id == m_DeviceModuleID)
+                                    {
+                                        if (device.dashboard_data != null)
+                                            return device.dashboard_data.Rain;
+
+                                        Logger(API.LogType.Error,
+                                            "PluginNetAtmo.dll: Processing function: Update, NetAtmo reports that device is unreachable - dashboard_data not returned.");
+                                    }
+
+                                    foreach (var module in device.modules)
+                                       if (module._id == m_DeviceModuleID)
+                                       {
+                                            // Requesting additional module for CO2 if exist - Straum
+                                            if (module.dashboard_data != null)
+                                                return module.dashboard_data.Rain;
+
+                                            Logger(API.LogType.Error,
+                                                "PluginNetAtmo.dll: Processing function: Update, NetAtmo reports that device is unreachable - dashboard_data not returned.");
+                                       }
                                 }
 
                                 Logger(API.LogType.Error,

@@ -23,6 +23,8 @@ namespace PluginNetAtmo
         public double Temperature { get; set; }
         public string temp_trend { get; set; }
         public int Humidity { get; set; }
+        public int CO2 { get; set; }      // definition to get CO2 value from additional Netatmo module - Straum
+        public int Rain { get; set; }     // definition to get Rain value from additional Netatmo module - Straum
         public int date_max_temp { get; set; }
         public int date_min_temp { get; set; }
         public double min_temp { get; set; }
@@ -63,6 +65,7 @@ namespace PluginNetAtmo
         public int Humidity { get; set; }
         public double Pressure { get; set; }
         public int CO2 { get; set; }
+        public int Rain { get; set; }
         public int date_max_temp { get; set; }
         public int date_min_temp { get; set; }
         public double min_temp { get; set; }
