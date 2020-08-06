@@ -261,6 +261,7 @@ namespace PluginNetAtmo
                             }
                             case ValueName.Rain:
                             {
+                                // trying to test and get values from Rain sensor - Straum
                                 foreach (var device in station.body.devices)
                                 {
                                     if (device._id == m_DeviceModuleID)
@@ -275,7 +276,6 @@ namespace PluginNetAtmo
                                     foreach (var module in device.modules)
                                        if (module._id == m_DeviceModuleID)
                                        {
-                                            // Requesting additional module for CO2 if exist - Straum
                                             if (module.dashboard_data != null)
                                                 return module.dashboard_data.Rain;
 
